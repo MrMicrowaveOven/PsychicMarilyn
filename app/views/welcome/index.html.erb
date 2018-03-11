@@ -5,6 +5,13 @@
     <title>The Marvelous Marilyn</title>
   </head>
   <body>
-    
+    <div id="data">
+
+    </div>
+    <script type="text/javascript">
+      var bartUrl = 'http://api.bart.gov/api/etd.aspx?key=MW9S-E7SL-26DU-VV8V&json=y&cmd=etd&orig=12TH&plat=2'
+      var bartCall = $.get(bartUrl)
+      $('#data').html(bartCall)
+    </script>
   </body>
 </html>
