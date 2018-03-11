@@ -9,9 +9,39 @@
 
     </div>
     <script type="text/javascript">
+      IDEAL_TIME_IMAGE = 'https://78.media.tumblr.com/c74eeac6d5579d55f614a7dcac4fba66/tumblr_p5eui8CWjD1v497yzo2_1280.jpg'
+      SOON_TIME_IMAGE = 'https://78.media.tumblr.com/51920820d8dbec7cdf7c13963b63602e/tumblr_p5eui8CWjD1v497yzo3_1280.jpg'
+      NOT_IDEAL_TIME_IMAGE = 'https://78.media.tumblr.com/920f9eb8e77bbf31fc8782bdd85a687a/tumblr_p5eui8CWjD1v497yzo1_540.jpg'
+
       var bartUrl = 'http://api.bart.gov/api/etd.aspx?key=MW9S-E7SL-26DU-VV8V&json=y&cmd=etd&orig=12TH&plat=2'
-      var bartCall = $.get(bartUrl)
-      $('#data').html(bartCall)
+      $.get(bartUrl, function(data) {
+        var etds = data.root.station[0].etd;
+        relevantTrains = etds.filter(function(train) {
+          return train.abbreviation == "MLBR";
+        })
+        // console.log(relevantTrains);
+        var minutesToArrivals = relevantTrains[0].estimate.map(function(estimate) {
+          return parseInt(estimate.minutes);
+        })
+        var minutesToNextReasonableArrival;
+        minutesToArrivals.forEach(function(arrival) {
+          if (arrival < 8) {
+            return;
+          }
+          minutesToNextReasonableArrival = minutesToNextReasonableArrival || arrival;
+        })
+        console.log(minutesToNextReasonableArrival);
+
+        if (!minutesToNextReasonableArrival || minutesToNextReasonableArrival > 13) {
+          marilynImage = NOT_IDEAL_TIME_IMAGE
+        } else if (minutesToNextReasonableArrival >= 11) {
+          marilynImage = SOON_TIME_IMAGE
+        } else if (minutesToNextReasonableArrival >= 8) {
+          marilynImage = SOON_TIME_IMAGE
+        }
+
+        $('#data').html('<img src="' + marilynImage + '"/>')
+      })
     </script>
   </body>
 </html>
