@@ -18,40 +18,23 @@
       SOON_TIME_IMAGE = 'https://78.media.tumblr.com/51920820d8dbec7cdf7c13963b63602e/tumblr_p5eui8CWjD1v497yzo3_1280.jpg'
       NOT_IDEAL_TIME_IMAGE = 'https://78.media.tumblr.com/920f9eb8e77bbf31fc8782bdd85a687a/tumblr_p5eui8CWjD1v497yzo1_540.jpg'
 
-      var bartUrl = 'http://api.bart.gov/api/etd.aspx?key=MW9S-E7SL-26DU-VV8V&json=y&cmd=etd&orig=12TH&plat=2'
-      $.get(bartUrl, function(data) {
-        var etds = data.root.station[0].etd;
-        relevantTrains = etds.filter(function(train) {
-          return train.abbreviation == "MLBR" || train.abbreviation == "SFIA";
-        })
-        // console.log(relevantTrains);
-        var minutesToArrivals = relevantTrains[0].estimate.map(function(estimate) {
-          return parseInt(estimate.minutes);
-        })
-        var minutesToNextReasonableArrival;
-        minutesToArrivals.forEach(function(arrival) {
-          if (arrival < 8) {
-            return;
-          }
-          minutesToNextReasonableArrival = minutesToNextReasonableArrival || arrival;
-        })
-        console.log(minutesToNextReasonableArrival);
-
-        if (!minutesToNextReasonableArrival || minutesToNextReasonableArrival > 13) {
+      $.get('/bart', function(data) {
+        next_train = data.next_train
+        if (!next_train || next_train > 13) {
           marilynImage = NOT_IDEAL_TIME_IMAGE
-        } else if (minutesToNextReasonableArrival >= 11) {
+        } else if (next_train >= 11) {
           marilynImage = SOON_TIME_IMAGE
-        } else if (minutesToNextReasonableArrival >= 8) {
+        } else if (next_train >= 8) {
           marilynImage = SOON_TIME_IMAGE
         }
 
         $('#marilyn').html('<img src="' + marilynImage + '" width="100%"/>')
 
         var dataTable = ""
-        relevantTrains.forEach(function(route) {
-          dataTable += route.destination + "<br><ul>"
-          route.estimate.forEach(function(estimatedArrival) {
-            dataTable += "<li>" + estimatedArrival.minutes + " minutes, " + estimatedArrival.length + " car train</li>"
+        data.all_trains.forEach(function(route) {
+          dataTable += route.name + "<br><ul>"
+          route.times.forEach(function(estimatedArrival) {
+            dataTable += "<li>" + estimatedArrival + " minutes</li>"
           })
           dataTable += "</ul>"
         })
