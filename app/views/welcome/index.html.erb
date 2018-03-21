@@ -23,7 +23,7 @@
       $.get(bartUrl, function(data) {
         var etds = data.root.station[0].etd;
         relevantTrains = etds.filter(function(train) {
-          return train.abbreviation == "MLBR";
+          return train.abbreviation == "MLBR" || train.abbreviation == "SFIA";
         })
         // console.log(relevantTrains);
         var minutesToArrivals = relevantTrains[0].estimate.map(function(estimate) {
