@@ -14,8 +14,10 @@ class Marilyn < ApplicationRecord
     req = Net::HTTP::Put.new(hue_url)
 
     req.body = '{"on":true, "bri":254,"hue": ' + color + '}'
-
+    p "Sending call to light"
     response = Net::HTTP.new(ENV['HUE_HOST']).start {|http| http.request(req) }
+    p "Sent call to light"
     response.body
+
   end
 end
