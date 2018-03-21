@@ -11,9 +11,8 @@
     <meta name="msapplication-square310x310logo" content="icon_largetile.png">
   </head>
   <body>
-    <div id="data">
-
-    </div>
+    <div id="marilyn"></div>
+    <div id="data"></div>
     <script type="text/javascript">
       IDEAL_TIME_IMAGE = 'https://78.media.tumblr.com/c74eeac6d5579d55f614a7dcac4fba66/tumblr_p5eui8CWjD1v497yzo2_1280.jpg'
       SOON_TIME_IMAGE = 'https://78.media.tumblr.com/51920820d8dbec7cdf7c13963b63602e/tumblr_p5eui8CWjD1v497yzo3_1280.jpg'
@@ -46,7 +45,16 @@
           marilynImage = SOON_TIME_IMAGE
         }
 
-        $('#data').html('<img src="' + marilynImage + '" width="100%"/>')
+        $('#marilyn').html('<img src="' + marilynImage + '" width="100%"/>')
+
+        var dataTable = ""
+        relevantTrains.forEach(function(route) {
+          dataTable += route.destination + "<br><ul>"
+          route.estimate.forEach(function(estimatedArrival) {
+            dataTable += "<li>" + estimatedArrival.minutes + " minutes, " + estimatedArrival.length + " car train</li>"
+          })
+        })
+        $('#data').html(dataTable)
       })
     </script>
   </body>
