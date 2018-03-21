@@ -11,7 +11,7 @@ task :speak_to_marilyn => :environment do
     p "Setting light"
     if next_train == 0 || next_train > 13
       Marilyn.set_light(2)
-    elsif next_train >= 11 && next_train < 13
+    elsif next_train >= 11 && next_train <= 13
       Marilyn.set_light(1)
     elsif next_train > 8 && next_train < 11
       Marilyn.set_light(0)
