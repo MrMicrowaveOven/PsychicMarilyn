@@ -53,6 +53,7 @@
           route.estimate.forEach(function(estimatedArrival) {
             dataTable += "<li>" + estimatedArrival.minutes + " minutes, " + estimatedArrival.length + " car train</li>"
           })
+          dataTable += "</ul>"
         })
         $('#data').html(dataTable)
       })
