@@ -2,6 +2,11 @@ require 'net/http'
 require 'json'
 
 class Bart < ApplicationRecord
+  NO_TRAINS = {
+    next_train: nil,
+    all_trains: []
+  }
+
   def self.get_train_data
     bart_url = 'http://api.bart.gov/api/etd.aspx?key=MW9S-E7SL-26DU-VV8V&json=y&cmd=etd&orig=12TH&plat=2'
     escaped_address = URI.escape(bart_url)
@@ -10,6 +15,8 @@ class Bart < ApplicationRecord
     bart_info = JSON.parse(bart_info)
 
     routes = bart_info['root']['station'][0]['etd']
+
+    return NO_TRAINS unless routes
 
     sf_routes = routes.select {|route| ['SFIA', 'MLBR'].include?(route['abbreviation'])}
 
