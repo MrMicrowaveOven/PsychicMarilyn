@@ -2,7 +2,7 @@
 
 desc 'Speak to marilyn'
 task :speak_to_marilyn => :environment do
-  10.times do
+  1000.times do
     p "RUNNING!"
     p "Getting train data"
     train_data = Bart.get_train_data
